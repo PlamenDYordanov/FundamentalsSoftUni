@@ -2,7 +2,6 @@ package ProgrammingFundamentals.MapsLambda.Exercises;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class P03_LegendaryFarming {
     public static void main(String[] args) {

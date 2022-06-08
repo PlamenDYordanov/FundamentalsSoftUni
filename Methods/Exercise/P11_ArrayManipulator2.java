@@ -1,4 +1,4 @@
-package ProgrammingFundamentals.Methods_Ex;
+package ProgrammingFundamentals.Methods.Exercise;
 
 import java.util.Scanner;
 
