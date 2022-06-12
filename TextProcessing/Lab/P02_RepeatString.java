@@ -1,4 +1,4 @@
-package ProgrammingFundamentals.TextProcessing;
+package ProgrammingFundamentals.TextProcessing.Lab;
 
 import java.util.ArrayList;
 import java.util.List;
