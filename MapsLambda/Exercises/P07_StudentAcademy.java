@@ -31,10 +31,13 @@ public class P07_StudentAcademy {
                 studentAverageGrade.put(nameStudent, averageGrades);
             }
         }
-        studentAverageGrade.entrySet().stream().sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+        /*studentAverageGrade.entrySet().stream().sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
                 .forEach(entry1 -> {
                     System.out.println(String.format("%s -> %.2f", entry1.getKey(), entry1.getValue()));
-                });
+                });*/
+        for (Map.Entry<String, Double> entry : studentAverageGrade.entrySet()) {
+            System.out.println(String.format("%s -> %.2f",entry.getKey(),entry.getValue()));
+        }
 
 
     }

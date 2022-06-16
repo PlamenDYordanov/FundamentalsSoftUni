@@ -8,7 +8,7 @@ public class P08_CompanyUsers {
         Scanner scanner = new Scanner(System.in);
 
         String input = scanner.nextLine();
-        Map<String, List<String>> companies = new TreeMap<>();
+        Map<String, List<String>> companies = new LinkedHashMap<>();
         boolean isExist = false;
 
         while (!input.equals("End")) {
