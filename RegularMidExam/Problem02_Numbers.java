@@ -38,6 +38,10 @@ public class Problem02_Numbers {
                     break;
 
                 case "Remove":
+                    int index = numbersList.indexOf(currentValue);
+                    if (index!=-1){
+                        numbersList.remove(index);
+                    }
                     for (int i = 0; i < numbersList.size(); i++) {
                         if (numbersList.get(i) == currentValue) {
                             numbersList.remove(i);
@@ -58,8 +62,10 @@ public class Problem02_Numbers {
 
                 case "Collapse":
                     for (int i = 0; i < numbersList.size(); i++) {
-                        if (numbersList.get(i) < currentValue) {
+                        int currentNum = numbersList.get(i);
+                        if (currentNum < currentValue) {
                             numbersList.remove(i);
+                          i--;
                         }
 
                     }
