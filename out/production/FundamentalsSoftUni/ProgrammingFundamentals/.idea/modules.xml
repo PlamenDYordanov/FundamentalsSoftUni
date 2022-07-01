@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Arrays/Arrays.iml" filepath="$PROJECT_DIR$/Arrays/Arrays.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ConditionalStatements/ConditionalStatements.iml" filepath="$PROJECT_DIR$/ConditionalStatements/ConditionalStatements.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DataTypesVariables/DataTypesVariables.iml" filepath="$PROJECT_DIR$/DataTypesVariables/DataTypesVariables.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FundamentalsSoftUni.iml" filepath="$PROJECT_DIR$/FundamentalsSoftUni.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Lists/Lists.iml" filepath="$PROJECT_DIR$/Lists/Lists.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MidExamPreparation/MidExamPreparation.iml" filepath="$PROJECT_DIR$/MidExamPreparation/MidExamPreparation.iml" />
+    </modules>
+  </component>
+</project>
