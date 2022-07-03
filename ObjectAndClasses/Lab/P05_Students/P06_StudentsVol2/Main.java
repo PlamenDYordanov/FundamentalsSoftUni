@@ -1,4 +1,4 @@
-package ProgrammingFundamentals.ObjectAndClasses.Lab.P06_StudentsVol2;
+package ProgrammingFundamentals.ObjectAndClasses.Lab.P05_Students.P06_StudentsVol2;
 
 
 import java.util.ArrayList;
