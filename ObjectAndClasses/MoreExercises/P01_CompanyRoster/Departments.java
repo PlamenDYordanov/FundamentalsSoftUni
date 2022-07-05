@@ -1,21 +1,28 @@
 package ProgrammingFundamentals.ObjectAndClasses.MoreExercises.P01_CompanyRoster;
 
+import java.util.List;
+
 public class Departments {
 
-    private String name;
-    private double salary;
-    private String position;
-    private String department;
-    private String email;
-    private  int age;
+    String name;
+    List<Employees> employee;
+    double avgSalary;
 
-    public Departments(String name, double salary, String position, String department, String email, int age){
+    Departments(String name, List<Employees> employee) {
         this.name = name;
-        this.salary = salary;
-        this.position = position;
-        this.department = department;
-        this.email = email;
-        this.age = age;
+        this.employee = employee;
+        this.avgSalary = employee.stream().mapToDouble(Employees::getSalary).average().getAsDouble();
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public List<Employees> getEmployee() {
+        return employee;
+    }
+
+    public double getAvgSalary() {
+        return avgSalary;
+    }
 }
