@@ -19,8 +19,10 @@ public class AdvertisementMessage {
 
             String[] eventsInput = {"Now I feel good.", "I have succeeded with this product.", "Makes miracles. I am happy of the results!", "I cannot believe but now I feel awesome.", "Try it yourself, I am very satisfied.", "I feel great!"};
             int y = randomGenerator.nextInt(eventsInput.length);
+
             String[] authors = {"Diana", "Petya", "Stella", "Elena", "Katya", "Iva", "Annie", "Eva"};
             int z = randomGenerator.nextInt(authors.length);
+
             String[] cities = {"Burgas", "Sofia", "Plovdiv", "Varna", "Ruse"};
             int p = randomGenerator.nextInt(cities.length);
 
