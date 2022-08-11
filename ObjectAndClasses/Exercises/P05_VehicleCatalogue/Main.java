@@ -16,7 +16,7 @@ public class Main {
         String model = "";
         String color = "";
         double horsePower = 0;
-        Vehicle vehicleObj = new Vehicle(type, model, color, horsePower);
+
 
         int counterCars = 0;
         int counterTrucks = 0;
@@ -27,7 +27,7 @@ public class Main {
             model = inputLine.split(" ")[1];
             color = inputLine.split(" ")[2];
             horsePower = Integer.parseInt(inputLine.split(" ")[3]);
-            vehicleObj = new Vehicle(type, model, color, horsePower);
+           Vehicle vehicleObj = new Vehicle(type, model, color, horsePower);
             switch (type) {
 
                 case "truck":

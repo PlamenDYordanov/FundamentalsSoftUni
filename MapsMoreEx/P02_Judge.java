@@ -1,6 +1,8 @@
 package ProgrammingFundamentals.MapsMoreEx;
 
+import java.time.chrono.MinguoDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class P02_Judge {
     public static void main(String[] args) {
@@ -8,62 +10,23 @@ public class P02_Judge {
 
         String input = scanner.nextLine();
 
-        Map<String, List<String>> mapOfNames = new LinkedHashMap<>();
-        Map<String, Integer> mapOfPoints = new LinkedHashMap<>();
-        Map<String, List<Integer>> mapCoursesPoints = new LinkedHashMap<>();
-        Map<String, List<Integer>> mapTotalPoints = new LinkedHashMap<>();
+
+        Map<String, Map<String, Integer>> contest = new LinkedHashMap<>();
 
 
         while (!input.equals("no more time")) {
 
-            String[] inputLine = input.split(" -> ");
-            String name = inputLine[0];
-            String contest = inputLine[1];
-            int points = Integer.parseInt(inputLine[2]);
+            String course = input.split(" -> ")[1];
+            String name = input.split(" -> ")[0];
+            int points = Integer.parseInt(input.split(" -> ")[2]);
 
-            if (!mapOfNames.containsKey(contest)) {
-                mapCoursesPoints.put(contest, new ArrayList<>());
-                mapCoursesPoints.get(contest).add(points);
-                if (mapOfPoints.containsKey(name)) {
-                    mapOfNames.put(contest, new ArrayList<>());
-
-                    mapOfNames.get(contest).add(name);
-                    int currentPoints = mapOfPoints.get(name);
-                    if (currentPoints < points) {
-                        mapOfPoints.put(name, points);
-                    }
-
-                    mapTotalPoints.get(name).add(points);
-                } else {
-                    mapOfNames.put(contest, new ArrayList<>());
-                    mapOfNames.get(contest).add(name);
-
-                    mapOfPoints.put(name, points);
-
-                    mapTotalPoints.put(name, new ArrayList<>());
-                    mapTotalPoints.get(name).add(points);
-                }
+            contest.putIfAbsent(course, new LinkedHashMap<>());
+            if (!contest.get(course).containsKey(name)) {
+                contest.get(course).put(name, points);
             } else {
-
-                if (mapOfNames.get(contest).contains(name)) {
-                    int currentPoints = mapOfPoints.get(name);
-                    if (currentPoints < points) {
-                        mapOfPoints.put(name, points);
-                        int lastIndex = mapTotalPoints.get(name).size();
-                        mapTotalPoints.get(name).set(lastIndex - 1, points);
-                    } else {
-                        mapTotalPoints.get(name).add(points);
-                        mapCoursesPoints.get(contest).add(points);
-                    }
-                } else {
-                    mapOfNames.get(contest).add(name);
-                    mapOfPoints.put(name, points);
-                    if (!mapTotalPoints.containsKey(name)) {
-                        mapTotalPoints.put(name, new ArrayList<>());
-                        mapTotalPoints.get(name).add(points);
-                    } else {
-                        mapTotalPoints.get(name).add(points);
-                    }
+                int currentPoints = contest.get(course).get(name);
+                if (currentPoints < points) {
+                    contest.get(course).put(name, points);
                 }
             }
 
@@ -72,56 +35,40 @@ public class P02_Judge {
 
 
         }
-        Map<String, Integer> reverseOrder = new LinkedHashMap<>();
-        mapOfPoints.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .forEach(x -> reverseOrder.put(x.getKey(), x.getValue()));
+
+        Comparator<Map.Entry<String, Integer>> participantsComparator = Map.Entry.<String, Integer>
+                        comparingByValue(Comparator.reverseOrder())
+                .thenComparing(Map.Entry.comparingByKey());
+
+        contest.forEach((exam, participants) -> {
+            System.out.printf("%s: %d participants%n", exam, participants.size());
+            final int[] index = {0};
+
+            participants.entrySet()
+                    .stream()
+                    .sorted(participantsComparator)
+                    .forEach(e -> {
+                        index[0] += 1;
+                        System.out.printf("%d. %s <::> %d%n", index[0], e.getKey(), e.getValue());
+                    });
 
 
-        for (Map.Entry<String, List<String>> entry : mapOfNames.entrySet()) {
-            String nameOfStudent = "";
-            System.out.printf("%s: %d participants%n", entry.getKey(), entry.getValue().size());
-            int index = 1;
-            String currentNames = String.valueOf(entry.getValue());
-            String[] names = currentNames.replaceAll("[\\[\\]]", "").split(", ");
+        });
+        System.out.println("Individual standings:");
+        final int[] index = {0};
+        contest.values()
+                .stream()
+                .flatMap(m -> m.entrySet().stream())
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getKey,
+                        Collectors.summingInt(Map.Entry::getValue)))
+                .entrySet()
+                .stream()
+                .sorted(participantsComparator)
+                .forEach(entry -> {
+                    index[0] += 1;
+                    System.out.printf("%d. %s -> %d%n", index[0], entry.getKey(), entry.getValue());
+                });
 
-
-            for (Map.Entry<String, List<Integer>> entry1 : mapCoursesPoints.entrySet()) {
-                if (!entry.getKey().equals(entry1.getKey())) {
-                    continue;
-                }
-                boolean isFinish = false;
-                entry1.getValue().sort(Collections.reverseOrder());
-                for (int i = 0; i < entry1.getValue().size(); i++) {
-
-                    int currentPoint = entry1.getValue().get(i);
-                    for (Map.Entry<String, List<Integer>> entry2 : mapTotalPoints.entrySet()) {
-                        boolean isFindStudent = false;
-                        entry2.getValue().sort(Collections.reverseOrder());
-                        for (int j = 0; j < entry2.getValue().size(); j++) {
-                            if (currentPoint == entry2.getValue().get(j)) {
-                                nameOfStudent = entry2.getKey();
-                                entry2.getValue().remove(j);
-                                isFindStudent = true;
-                                break;
-                            }
-                        }
-                        if (isFindStudent) {
-                            break;
-                        }
-                    }
-
-
-                    System.out.printf("%d. %s <::> %d%n", index, nameOfStudent, currentPoint);
-                    index++;
-                    if (i == entry1.getValue().size() - 1) {
-                        isFinish = true;
-                    }
-
-                }
-                if (isFinish) {
-                    break;
-                }
-            }
-        }
     }
 }
