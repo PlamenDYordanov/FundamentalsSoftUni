@@ -68,6 +68,7 @@ public class P01_Ranking {
         for (Map.Entry<String, List<String>> entry : mapOfCandidateContest.entrySet()) {
             Map<String, Integer> mapOfContestRating = new LinkedHashMap<>();
             Map<String, Integer> reverseOrder = new LinkedHashMap<>();
+
             String currentContest = String.valueOf(entry.getValue());
            String[] currentContestArr = currentContest.replaceAll("[\\[\\]]", "").split(", ");
             for (int i = 0; i < currentContestArr.length; i++) {
@@ -77,6 +78,7 @@ public class P01_Ranking {
             }
             mapOfContestRating.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                     .forEachOrdered(x -> reverseOrder.put(x.getKey(), x.getValue()));
+
             System.out.printf("%s%n",entry.getKey());
             for (Map.Entry<String, Integer> elements : reverseOrder.entrySet()) {
                 System.out.printf("#  %s -> %d%n",elements.getKey(), elements.getValue());

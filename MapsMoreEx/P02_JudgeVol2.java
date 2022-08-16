@@ -27,7 +27,7 @@ public class P02_JudgeVol2 {
                 .thenComparing(Map.Entry.comparingByKey());
 
         contests.forEach((contest, participants) -> {
-            System.out.printf("%s: %d participants\n", contest, participants.size());
+            System.out.printf("%s: %d participants", contest, participants.size());
             final int[] count = {0};
             participants.entrySet()
                     .stream()
