@@ -37,30 +37,46 @@ public class P05_DragonArmy {
                 armorInt = Double.parseDouble(input[4]);
 
             }
-            totalPoints.putIfAbsent(type, new ArrayList<>());
-            if (totalPoints.get(type).size() > 1) {
-                double currentDamage = totalPoints.get(type).get(0);
-                double currentHeath = totalPoints.get(type).get(1);
-                double currentArmor = totalPoints.get(type).get(2);
-                totalPoints.get(type).set(0, damageInt + currentDamage);
-                totalPoints.get(type).set(1, healthInt + currentHeath);
-                totalPoints.get(type).set(2, armorInt + currentArmor);
+
+            if (dragonMap.containsKey(type) && dragonMap.get(type).containsKey(name)) {
+                dragonMap.get(type).get(name).set(0, damageInt);
+                dragonMap.get(type).get(name).set(1, healthInt);
+                dragonMap.get(type).get(name).set(2, armorInt);
             } else {
-                totalPoints.get(type).add(0, damageInt);
-                totalPoints.get(type).add(1, healthInt);
-                totalPoints.get(type).add(2, armorInt);
+                dragonMap.putIfAbsent(type, new LinkedHashMap<>());
+                dragonMap.get(type).putIfAbsent(name, new ArrayList<>());
+                dragonMap.get(type).get(name).add(0, damageInt);
+                dragonMap.get(type).get(name).add(1, healthInt);
+                dragonMap.get(type).get(name).add(2, armorInt);
+
             }
-
-            dragonMap.putIfAbsent(type, new LinkedHashMap<>());
-            dragonMap.get(type).putIfAbsent(name, new ArrayList<>());
-
-            dragonMap.get(type).get(name).add(0, damageInt);
-            dragonMap.get(type).get(name).add(1, healthInt);
-            dragonMap.get(type).get(name).add(2, armorInt);
 
         }
 
+        Map<String, List<Double>> newMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Map<String, List<Double>>> entry : dragonMap.entrySet()) {
+            newMap = entry.getValue();
+            int index = 0;
+            for (Map.Entry<String, List<Double>> subEntry : newMap.entrySet()) {
+                if (index > 0) {
+                    double currentDamage = totalPoints.get(entry.getKey()).get(0);
+                    double currentHeath = totalPoints.get(entry.getKey()).get(1);
+                    double currentArmor = totalPoints.get(entry.getKey()).get(2);
+                    totalPoints.get(entry.getKey()).set(0, currentDamage + subEntry.getValue().get(0));
+                    totalPoints.get(entry.getKey()).set(1, currentHeath + subEntry.getValue().get(1));
+                    totalPoints.get(entry.getKey()).set(2, currentArmor + subEntry.getValue().get(2));
+                } else {
+                    for (int i = 0; i < subEntry.getValue().size(); i++) {
+                        totalPoints.putIfAbsent(entry.getKey(), new ArrayList<>());
+                        totalPoints.get(entry.getKey()).add(subEntry.getValue().get(i));
+                    }
+                }
+                index++;
 
+            }
+
+
+        }
         List<Integer> indexs = new ArrayList<>();
 
         for (Map.Entry<String, Map<String, List<Double>>> entry : dragonMap.entrySet()) {
@@ -76,8 +92,92 @@ public class P05_DragonArmy {
             index++;
 
         }
+            for (Map.Entry<String, Map<String, List<Double>>> mapEntry : dragonMap.entrySet()) {
 
-        System.out.printf("");
+                totalPoints.entrySet().stream().limit(1).forEach(o -> {
+
+                    System.out.printf("%s::(%.2f/%.2f/%.2f)%n", o.getKey(), o.getValue().get(0), o.getValue().get(1), o.getValue().get(2));
+                });
+
+                mapEntry.getValue().entrySet()
+                        .stream()
+                        .sorted((e1, e2) -> {
+                            int result = e1.getKey().compareTo(e2.getKey());
+                            return result;
+                        }).forEach(p -> {
+                            double currentDamage = p.getValue().get(0);
+                            double currentHealth = p.getValue().get(1);
+                            double currentArmor = p.getValue().get(2);
+                            System.out.printf("-%s -> damage: %.0f, health: %.0f, armor: %.0f%n", p.getKey(), currentDamage, currentHealth, currentArmor);
+
+                        });
+                totalPoints.remove(mapEntry.getKey());
+            }
+
+       /* for (Map.Entry<String, List<Double>> entry : totalPoints.entrySet()) {
+            String currentType = entry.getKey();
+            double damage = entry.getValue().get(0);
+            double health = entry.getValue().get(1);
+            double armor = entry.getValue().get(2);
+            System.out.printf("%s::(%.2f/%.2f/%.2f)%n", currentType, damage, health, armor);
+
+
+            dragonMap.entrySet()
+                    .stream()
+                    .sorted((e1, e2) -> {
+                        e1.getValue().entrySet()
+                                .stream()
+                                .sorted((p1, p2) -> {
+                                    int result = p2.getKey().compareTo(p1.getKey());
+                                    if (result == 0) {
+                                        result = p1.getKey().compareTo(p2.getKey());
+                                    }
+                                    return result;
+                                });
+
+                    });
+
+            int indexDiff = 0;
+            for (Map.Entry<String, Map<String, List<Double>>> subEntry : dragonMap.entrySet()) {
+                String[] arr = subEntry.getValue().toString().replace("{", "").split("\\],");
+                boolean isFinish = false;
+                String arrNames = arr[indexDiff].split("=")[0].trim();
+                dragonMap.entrySet().forEach(p -> {
+                    subEntry.getValue().entrySet().stream()
+                            .sorted((e1, e2) -> {
+                                int result = e2.getKey().compareTo(e1.getKey());
+                                return result;
+
+                            }).forEach((o -> {
+                                double currentDamage = o.getValue().get(0);
+                                double currentHealth = o.getValue().get(1);
+                                double currentArmor = o.getValue().get(2);
+                                System.out.printf("-%s -> damage: %.0f, health: %.0f, armor: %.0f%n", arrNames, currentDamage, currentHealth, currentArmor);
+
+
+                            }));
+                });
+
+                indexDiff++;
+
+
+                isFinish = true;
+
+                if (isFinish) {
+                    dragonMap.remove(entry.getKey());
+                    break;
+                }
+
+
+            }
+
+            System.out.printf("");*/
+        }
+
+
     }
-}
+
+
+
+
 
